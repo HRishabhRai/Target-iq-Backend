@@ -32,13 +32,6 @@ const LANGUAGE_IDS = {
   java: 62,
 };
 
-app.get("/health", (req, res) => {
-  res.status(200).json({ 
-    msg: "api is up and running",
-    clientUrl: ENV.CLIENT_URL  // 👈 add this
-  });
-});
-
 app.post("/api/execute", async (req, res) => {
   const { language, files } = req.body;
   const code = files[0].content;
@@ -77,14 +70,6 @@ app.get("/health", (req, res) => {
   res.status(200).json({ msg: "api is up and running" });
 });
 
-// make our app ready for deployment
-if (ENV.NODE_ENV === "production") {
-  app.use(express.static(path.join(__dirname, "../frontend/dist")));
-
-  app.get("*", (req, res) => {  // ✅ Express 4 syntax
-    res.sendFile(path.join(__dirname, "../frontend", "dist", "index.html"));
-  });
-}
 
 const startServer = async () => {
   try {
