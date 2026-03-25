@@ -32,6 +32,13 @@ const LANGUAGE_IDS = {
   java: 62,
 };
 
+app.get("/health", (req, res) => {
+  res.status(200).json({ 
+    msg: "api is up and running",
+    clientUrl: ENV.CLIENT_URL  // 👈 add this
+  });
+});
+
 app.post("/api/execute", async (req, res) => {
   const { language, files } = req.body;
   const code = files[0].content;
