@@ -9,7 +9,7 @@ import { connectDB } from "./lib/db.js";
 import { inngest, functions } from "./lib/inngest.js";
 
 import chatRoutes from "./routes/chatRoutes.js";
-import sessionRoutes from "./routes/sessionRoutes.js"; 
+import sessionRoutes from "./routes/sessionRoute.js"; 
 
 const app = express();
 
@@ -23,7 +23,7 @@ const allowedOrigins = [
   "https://target-iq-frontend.vercel.app", // fallback
 ];
 
-app.use(cors({
+const corsOptions = {
   origin: (origin, callback) => {
     if (!origin || allowedOrigins.includes(origin)) {
       callback(null, true);
@@ -32,18 +32,11 @@ app.use(cors({
     }
   },
   credentials: true,
-}));
+  methods: ["GET", "POST", "PUT", "DELETE", "OPTIONS"],
+  allowedHeaders: ["Content-Type", "Authorization"],
+};
 
-app.options("*", cors({
-  origin: (origin, callback) => {
-    if (!origin || allowedOrigins.includes(origin)) {
-      callback(null, true);
-    } else {
-      callback(new Error("Not allowed by CORS"));
-    }
-  },
-  credentials: true,
-}));
+app.use(cors(corsOptions));
 
 app.use(clerkMiddleware()); // this adds auth field to request object: req.auth()
 
