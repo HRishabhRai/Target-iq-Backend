@@ -34,7 +34,7 @@ app.use(cors({
   credentials: true,
 }));
 
-app.options("/{*path}", cors({
+app.options("*", cors({
   origin: (origin, callback) => {
     if (!origin || allowedOrigins.includes(origin)) {
       callback(null, true);
